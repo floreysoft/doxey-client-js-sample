@@ -1,0 +1,13 @@
+{
+  "name": "ultradox-api-client-js-sample",
+  "version": "1.0.0",
+  "description": "Ultradox API sample client in HTML/JS",
+  "author": "Floreysoft",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/http-server/bin/http-server ./public"
+  },
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}

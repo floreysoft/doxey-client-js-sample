@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>Ultradox-API convert document</title>
+<script src="base64ArrayBuffer.js"></script>
+<script src="download.js"></script>
+<script>
+var url = "https://ultradox-api.appspot.com/directConverter?key=AIzaSyBo3er3z9Kj8Xymx1bicsmIH-2HUCphaIQ";
+
+function doConvert() {
+ var selectedFile = document.getElementById('thefile').files[0];
+ var reader = new FileReader();
+ var filename = "file." + document.getElementById("format").value;
+ var p = selectedFile.arrayBuffer();
+ p.then((buffer) => {
+  console.log (base64ArrayBuffer(buffer));
+  var model = JSON.parse(document.getElementById("model").value);
+  var data = {"templatecontent":base64ArrayBuffer(buffer),
+              "locale": document.getElementById("locale").value,
+              "timezone": document.getElementById("timezone").value,
+              "currency": document.getElementById("currency").value,
+              "format": document.getElementById("format").value,
+              "model": model,
+  };
+  var x = fetch(url, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  x.then(response => {
+    return response.blob();
+  })
+  .then(blob => {
+    download(blob, filename, "application/octet-stream");
+  })
+  .catch(() => {
+   debugger;
+  });
+ });
+}
+
+</script>
+</head>
+<body>
+<form onsubmit="return false;">
+<table>
+<tr>
+<td>File</td>
+<td><input type="file" id="thefile"></td>
+</tr>
+<tr>
+<td>Format</td>
+<td><select id="format">
+<option value="docx">DOCX</option>
+<option value="odt">ODT</option>
+<option value="pdf">PDF</option>
+<option value="txt">TXT</option>
+<option selected value="html">HTML</option>
+</select></td>
+</tr>
+<tr>
+<td>Locale</td>
+<td><input type="text" id="locale" value="de"></td>
+</tr>
+<tr>
+<td>Currency</td>
+<td><input type="text" id="currency" value="EUR"></td>
+</tr>
+<tr>
+<td>Timezone</td>
+<td><input type="text" id="timezone" value="GMT-03:00"></td>
+</tr>
+<tr>
+<td>Model</td>
+<td><textarea id="model" cols="40" rows="20">{
+    "test": "kleiner ",
+    "amount": 112,
+    "zeit": "12:11:44"
+  }</textarea></td>
+</tr>
+<tr>
+<td></td>
+<td><input type="button" onclick="doConvert()" value="Convert"></td>
+</tr>
+</form>
+</body>
+</html>
