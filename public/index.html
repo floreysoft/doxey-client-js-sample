@@ -1,27 +1,13 @@
 <html>
 <head>
-<title>Ultradox-API convert document</title>
+<title>Doxey-API convert document</title>
 <script src="base64ArrayBuffer.js"></script>
 <script src="download.js"></script>
 <script>
-var url = "https://ultradox-api.appspot.com/directConverter?key=AIzaSyBo3er3z9Kj8Xymx1bicsmIH-2HUCphaIQ";
+var url = "https://api.doxey.io/merge";
 
-function doConvert() {
- var selectedFile = document.getElementById('thefile').files[0];
- var reader = new FileReader();
- var filename = "file." + document.getElementById("format").value;
- var p = selectedFile.arrayBuffer();
- p.then((buffer) => {
-  console.log (base64ArrayBuffer(buffer));
-  var model = JSON.parse(document.getElementById("model").value);
-  var data = {"templatecontent":base64ArrayBuffer(buffer),
-              "locale": document.getElementById("locale").value,
-              "timezone": document.getElementById("timezone").value,
-              "currency": document.getElementById("currency").value,
-              "format": document.getElementById("format").value,
-              "model": model,
-  };
-  var x = fetch(url, {
+function doFetch(data, filename) {
+  fetch(url, {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
@@ -29,17 +15,51 @@ function doConvert() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
-  });
-  x.then(response => {
+  })
+  .then(response => {
     return response.blob();
   })
   .then(blob => {
     download(blob, filename, "application/octet-stream");
   })
   .catch(() => {
-   debugger;
+    debugger;
   });
- });
+}
+
+function doConvert() {
+  if (document.getElementById('thefile').files.length > 0) {
+    var selectedFile = document.getElementById('thefile').files[0];
+    var reader = new FileReader();
+    var filename = "file." + document.getElementById("format").value;
+    var p = selectedFile.arrayBuffer();
+    p.then((buffer) => {
+      console.log(base64ArrayBuffer(buffer));
+      var model = JSON.parse(document.getElementById("model").value);
+      var data = {
+        "template": base64ArrayBuffer(buffer),
+        "locale": document.getElementById("locale").value,
+        "timezone": document.getElementById("timezone").value,
+        "currency": document.getElementById("currency").value,
+        "format": document.getElementById("format").value,
+        "apiKey": document.getElementById("apikey").value,
+        "model": model,
+      };
+      doFetch(data, filename);
+    });
+  } else {
+    var model = JSON.parse(document.getElementById("model").value);
+    var data = {
+      "template": document.getElementById("template").value,
+      "locale": document.getElementById("locale").value,
+      "timezone": document.getElementById("timezone").value,
+      "currency": document.getElementById("currency").value,
+      "format": document.getElementById("format").value,
+      "apiKey": document.getElementById("apikey").value,
+      "model": model,
+    };
+    doFetch(data, filename);
+  }
 }
 
 </script>
@@ -48,17 +68,25 @@ function doConvert() {
 <form onsubmit="return false;">
 <table>
 <tr>
-<td>File</td>
-<td><input type="file" id="thefile"></td>
+  <td>API Key</td>
+  <td><input type="text" id="apikey"></td>
+</tr>
+<tr>
+  <td>Template File</td>
+  <td><input type="file" id="thefile"></td>
+</tr>
+<tr>
+  <td>Template URL (either URL or File)</td>
+  <td><input type="text" id="template" value="https://docs.google.com/document/d/1urL-JV2m85jry1_tatbjSFBjUZgGiMmwwNR9X8UTUTg/edit"></td>
 </tr>
 <tr>
 <td>Format</td>
 <td><select id="format">
+<option selected value="pdf">PDF</option>
 <option value="docx">DOCX</option>
 <option value="odt">ODT</option>
-<option value="pdf">PDF</option>
 <option value="txt">TXT</option>
-<option selected value="html">HTML</option>
+<option value="html">HTML</option>
 </select></td>
 </tr>
 <tr>
@@ -76,10 +104,40 @@ function doConvert() {
 <tr>
 <td>Model</td>
 <td><textarea id="model" cols="40" rows="20">{
-    "test": "kleiner ",
-    "amount": 112,
-    "zeit": "12:11:44"
-  }</textarea></td>
+  "name" : "John Doe",
+  "company" : "ACME",
+  "address" : "1234 Market Street, San Francisco, CA 94103, United States",
+  "date" : "2019-09-23T18:25:00.000Z",
+  "invoiceNumber" : "INV-12345678",
+  "signer" : "Cora Nilson",
+  "signature" : "https://www.doxey.io/images/signature.png",
+  "subtotal" : 1301,
+  "vatRate" : 19,
+  "vat" : 247.19,
+  "total" : 1548.19,
+  "items" : [
+    {
+    "name" : "Project Setup",
+    "description" : "Create github repo, setup timetracker and Slack channels",
+    "amount" : 90
+    },
+    {
+    "name" : "Optimize Photos",
+    "description" : "Scan, crop and scale images to reduce loading times",
+    "amount" : 340.50
+    },
+    {
+    "name" : "Website structure",
+    "description" : "Copy blank boostrap template. Setup pages and adjust links",
+    "amount" : 250.50
+    },
+    {
+    "name" : "CSS theme",
+    "description" : "Create CSS styles according to CI",
+    "amount" : 620
+    }
+  ]
+}</textarea></td>
 </tr>
 <tr>
 <td></td>

@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>Doxey-API convert document</title>
+</head>
+<body>
+<form method="POST" target="_blank" enctype="multipart/form-data" action="https://api.doxey.io/merge">
+<table>
+<tr>
+  <td>API Key</td>
+  <td><input type="text" name="apiKey"></td>
+</tr>
+<tr>
+  <td>File</td>
+  <td><input type="file" name="template"></td>
+</tr>
+<tr>
+<td>Format</td>
+<td><select name="format">
+<option value="docx">DOCX</option>
+<option value="odt">ODT</option>
+<option value="pdf">PDF</option>
+<option value="txt">TXT</option>
+<option selected value="html">HTML</option>
+</select></td>
+</tr>
+<tr>
+<td>Locale</td>
+<td><input type="text" name="locale" value="de"></td>
+</tr>
+<tr>
+<td>Currency</td>
+<td><input type="text" name="currency" value="EUR"></td>
+</tr>
+<tr>
+<td>Timezone</td>
+<td><input type="text" name="timezone" value="GMT-03:00"></td>
+</tr>
+<tr>
+<td>Model</td>
+<td><textarea name="model" cols="40" rows="20">{
+    "test": "kleiner ",
+    "amount": 112,
+    "zeit": "12:11:44"
+  }</textarea></td>
+</tr>
+<tr>
+<td></td>
+<td><input type="submit" value="Convert"></td>
+</tr>
+</table>
+</form>
+</body>
+</html>
