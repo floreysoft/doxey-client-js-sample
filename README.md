@@ -12,7 +12,3 @@ yarn start
 Then open a browser at http://127.0.0.1:8080/index.html
 
 You can either opload an ODT (LibreOffice/OpenOffice) file or enter an URL pointing at a Google Doc or ODT on Drive or other hosting services.
-
-## open on github.io
-
-This source is also hosted on github.io https://floreysoft.github.io/doxey-client-js-sample/index.html
