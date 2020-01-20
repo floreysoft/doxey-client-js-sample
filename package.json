@@ -1,13 +1,24 @@
 {
-  "name": "ultradox-api-client-js-sample",
+  "name": "doxey-client-js-sample",
   "version": "1.0.0",
-  "description": "Ultradox API sample client in HTML/JS",
+  "description": "Doxey API sample client in HTML/JS",
   "author": "Floreysoft",
   "private": true,
   "scripts": {
-    "start": "node node_modules/http-server/bin/http-server ./docs"
+    "start-simple": "node node_modules/http-server/bin/http-server ./docs",
+    "start": "webpack-dev-server --open"
   },
   "devDependencies": {
-    "http-server": "^0.11.1"
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1",
+    "webpack-merge": "^4.2.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "webpack-auto-inject-version": "^1.2.2"
+  },
+  "dependencies": {
+    "doxey-client-js": "^1.0.4"
   }
 }

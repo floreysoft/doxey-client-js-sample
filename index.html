@@ -1,69 +1,7 @@
 <html>
 <head>
 <title>Doxey-API convert document</title>
-<script src="base64ArrayBuffer.js"></script>
-<script src="download.js"></script>
-<script>
-var url = "https://api.doxey.io/merge";
-
-function doFetch(data, filename) {
-  fetch(url, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-  .then(response => {
-    return response.blob();
-  })
-  .then(blob => {
-    download(blob, filename, "application/octet-stream");
-  })
-  .catch(() => {
-    debugger;
-  });
-}
-
-function doConvert() {
-  if (document.getElementById('thefile').files.length > 0) {
-    var selectedFile = document.getElementById('thefile').files[0];
-    var reader = new FileReader();
-    var filename = "file." + document.getElementById("format").value;
-    var p = selectedFile.arrayBuffer();
-    p.then((buffer) => {
-      console.log(base64ArrayBuffer(buffer));
-      var model = JSON.parse(document.getElementById("model").value);
-      var data = {
-        "template": base64ArrayBuffer(buffer),
-        "locale": document.getElementById("locale").value,
-        "timezone": document.getElementById("timezone").value,
-        "currency": document.getElementById("currency").value,
-        "format": document.getElementById("format").value,
-        "apiKey": document.getElementById("apikey").value,
-        "model": model,
-      };
-      doFetch(data, filename);
-    });
-  } else {
-    var model = JSON.parse(document.getElementById("model").value);
-    var data = {
-      "template": document.getElementById("template").value,
-      "locale": document.getElementById("locale").value,
-      "timezone": document.getElementById("timezone").value,
-      "currency": document.getElementById("currency").value,
-      "format": document.getElementById("format").value,
-      "apiKey": document.getElementById("apikey").value,
-      "model": model,
-    };
-    doFetch(data, filename);
-  }
-}
-
-</script>
-</head>
+<script src="main.js"></script></head>
 <body>
 <form onsubmit="return false;">
 <table>
@@ -141,7 +79,7 @@ function doConvert() {
 </tr>
 <tr>
 <td></td>
-<td><input type="button" onclick="doConvert()" value="Convert"></td>
+<td><input id="convert" type="button" value="Convert"></td>
 </tr>
 </form>
 </body>
